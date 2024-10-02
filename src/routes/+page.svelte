@@ -1,15 +1,19 @@
-Base stuff
-
-<!-- <script lang="ts">
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import Divider from '../lib/Divider.svelte';
+	import { BootStep, bootSteps } from '../lib/bootSteps.svelte';
 
-	let status = '...';
 	let isolated = '...';
 
 	let memory = 2;
 	function onMemoryUpdate(event: Event & { currentTarget: EventTarget & HTMLInputElement }) {
 		memory = +event.currentTarget?.value;
+	}
+
+	function runStep(stepNumber: number, step: BootStep) {
+		for (let i = 0; i < stepNumber; i++) {
+			if (bootSteps[i])
+		}
 	}
 
 	onMount(() => {
@@ -48,4 +52,11 @@ Base stuff
 <Divider />
 
 <div>Boot Process</div>
-<Divider /> -->
+{#each bootSteps as step, i (step.name)}
+	<div>
+		{i}. <input disabled={step.disabled} checked={step.autorun} type="checkbox" />
+		<button on:click={() => runStep(i, step)}>{step.name}</button>
+		<span>{step.success ? ' - ✅' : step.failed ? ' - ❌' : ''}</span>
+	</div>
+{/each}
+<Divider />
