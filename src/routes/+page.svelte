@@ -5,6 +5,7 @@
 
 	let status = 'uninitialized';
 	let isolated = false;
+	let memory = 2;
 
 	onMount(() => {
 		isolated = crossOriginIsolated;
@@ -29,3 +30,8 @@
 <button on:click={onClear}>Clear Autoboot</button>
 
 <Divider />
+
+<label>
+	<div>Initial WebAssembly Memory Allotment: {memory}GB</div>
+	<input style="width: 300px" type="range" min="1" max="3.75" step="0.25" bind:value={memory} />
+</label>
