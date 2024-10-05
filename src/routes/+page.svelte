@@ -4,11 +4,11 @@
 	import Divider from '$lib/Divider.svelte';
 
 	let status = 'uninitialized';
-	let isolated = false;
+	let isolated = '...';
 	let memory = 2;
 
 	onMount(() => {
-		isolated = crossOriginIsolated;
+		isolated = `${crossOriginIsolated}`;
 	});
 
 	function onClear() {}
