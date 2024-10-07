@@ -9,7 +9,8 @@ const DEFAULT_AUTOBOOT_CONFIG = {
 
 type StepName = keyof typeof DEFAULT_AUTOBOOT_CONFIG;
 
-type BootStep = {
+export type BootStep = {
+	id: StepName;
 	autorun: boolean;
 	disabled: boolean;
 	status: '' | '⏳' | '✅' | '❌';
@@ -19,6 +20,7 @@ type BootStep = {
 
 export const boot: Record<StepName, BootStep> = $state({
 	memory: {
+		id: 'memory',
 		autorun: false,
 		disabled: false,
 		status: '',
@@ -26,6 +28,7 @@ export const boot: Record<StepName, BootStep> = $state({
 		action: () => {},
 	},
 	glue: {
+		id: 'glue',
 		autorun: false,
 		disabled: false,
 		status: '',
@@ -33,6 +36,7 @@ export const boot: Record<StepName, BootStep> = $state({
 		action: () => {},
 	},
 	wasm: {
+		id: 'wasm',
 		autorun: false,
 		disabled: false,
 		status: '',
@@ -40,6 +44,7 @@ export const boot: Record<StepName, BootStep> = $state({
 		action: () => {},
 	},
 	canvas: {
+		id: 'canvas',
 		autorun: false,
 		disabled: false,
 		status: '',
@@ -47,6 +52,7 @@ export const boot: Record<StepName, BootStep> = $state({
 		action: () => {},
 	},
 	file: {
+		id: 'file',
 		autorun: false,
 		disabled: true,
 		status: '',
@@ -54,6 +60,7 @@ export const boot: Record<StepName, BootStep> = $state({
 		action: () => {},
 	},
 	brush: {
+		id: 'brush',
 		autorun: false,
 		disabled: true,
 		status: '',

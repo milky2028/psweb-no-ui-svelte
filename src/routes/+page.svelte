@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import Divider from '$lib/Divider.svelte';
-	import { boot } from '$lib/boot.svelte';
+	import { boot, type BootStep } from '$lib/boot.svelte';
 
 	let status = 'uninitialized';
 	let isolated = '...';
@@ -14,9 +14,9 @@
 
 	function onClear() {}
 
-	async function runStep(position: number) {
+	async function runStep(position: number, step: BootStep) {
 		for (let i = 0; i < position; i++) {
-			await Object.values(boot)[i].action();
+			await boot[step.id].action();
 		}
 	}
 </script>
@@ -50,7 +50,7 @@
 {#each Object.values(boot) as step, i}
 	<div>
 		{i + 1}. <input disabled={step.disabled} type="checkbox" checked={step.autorun} />
-		<button disabled={step.disabled} on:click={() => runStep(i)}>{step.name}</button>
+		<button disabled={step.disabled} on:click={() => runStep(i, step)}>{step.name}</button>
 		{step.status ? ` - ${step.status}` : ''}
 	</div>
 {/each}
