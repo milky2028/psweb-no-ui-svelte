@@ -1,4 +1,4 @@
-const DEFAULT_AUTOBOOT_CONFIG = {
+export const DEFAULT_AUTOBOOT_CONFIG = {
 	memory: false,
 	glue: false,
 	wasm: false,
@@ -7,10 +7,8 @@ const DEFAULT_AUTOBOOT_CONFIG = {
 	brush: false,
 };
 
-type StepName = keyof typeof DEFAULT_AUTOBOOT_CONFIG;
-
 export type BootStep = {
-	id: StepName;
+	id: string;
 	autorun: boolean;
 	disabled: boolean;
 	status: '' | '⏳' | '✅' | '❌';
@@ -18,63 +16,60 @@ export type BootStep = {
 	action: () => void | Promise<void>;
 };
 
-export const boot: Record<StepName, BootStep> = $state({
-	memory: {
+export const boot: BootStep[] = $state([
+	{
 		id: 'memory',
 		autorun: false,
 		disabled: false,
 		status: '',
 		name: 'Create WASM Memory',
-		action: () => {},
+		action: () => console.log('creating wasm memory'),
 	},
-	glue: {
+	{
 		id: 'glue',
 		autorun: false,
 		disabled: false,
 		status: '',
 		name: 'Load Emscripten JS Glue Code',
-		action: () => {},
+		action: () => console.log('loading glue code'),
 	},
-	wasm: {
+	{
 		id: 'wasm',
 		autorun: false,
 		disabled: false,
 		status: '',
 		name: 'Load WASM',
-		action: () => {},
+		action: () => console.log('loading wasm'),
 	},
-	canvas: {
+	{
 		id: 'canvas',
 		autorun: false,
 		disabled: false,
 		status: '',
 		name: 'Create Canvas and Attach Renderer',
-		action: () => {},
+		action: () => console.log('creating canvas'),
 	},
-	file: {
+	{
 		id: 'file',
 		autorun: false,
 		disabled: true,
 		status: '',
 		name: 'Import File and Open',
-		action: () => {},
+		action: () => console.log('importing file'),
 	},
-	brush: {
+	{
 		id: 'brush',
 		autorun: false,
 		disabled: true,
 		status: '',
 		name: 'Draw Brushstroke',
-		action: () => {},
+		action: () => console.log('drawing brushstroke'),
 	},
-});
+]);
 
-// const autobootStorageKey = 'autoboot';
-// const storedBootConfig = localStorage.getItem(autobootStorageKey);
-// const autobootConfig: typeof DEFAULT_AUTOBOOT_CONFIG = storedBootConfig
-// 	? JSON.parse(storedBootConfig)
-// 	: { ...DEFAULT_AUTOBOOT_CONFIG };
-
-// for (const [key, shouldAutorun] of Object.entries(autobootConfig)) {
-// 	boot[key as StepName].autorun = shouldAutorun;
-// }
+export const setAutorun = (id: string, shouldAutorun = true) => {
+	const step = boot.find((step) => step.id === id);
+	if (step) {
+		step.autorun = shouldAutorun;
+	}
+};

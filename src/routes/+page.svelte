@@ -2,28 +2,69 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import Divider from '$lib/Divider.svelte';
-	import { boot, type BootStep } from '$lib/boot.svelte';
+	import { boot, DEFAULT_AUTOBOOT_CONFIG, setAutorun, type BootStep } from '$lib/boot.svelte';
 
-	let status = 'uninitialized';
-	let isolated = '...';
-	let memory = 2;
+	const AUTOBOOT_STORAGE_KEY = 'autoboot';
+	let isolated = $state('...');
+	let memory = $state(2);
+
+	$effect(() => {
+		const bootEntries = boot.map((step) => [step.id, step.autorun]);
+		localStorage.setItem(AUTOBOOT_STORAGE_KEY, JSON.stringify(Object.fromEntries(bootEntries)));
+	});
 
 	onMount(() => {
 		isolated = `${crossOriginIsolated}`;
+
+		const autobootStorageKey = 'autoboot';
+		const storedBootConfig = localStorage.getItem(autobootStorageKey);
+		const autobootConfig: typeof DEFAULT_AUTOBOOT_CONFIG = storedBootConfig
+			? JSON.parse(storedBootConfig)
+			: { ...DEFAULT_AUTOBOOT_CONFIG };
+
+		for (const [key, shouldAutorun] of Object.entries(autobootConfig)) {
+			setAutorun(key, shouldAutorun);
+		}
 	});
 
 	function onClear() {}
 
-	async function runStep(position: number, step: BootStep) {
-		for (let i = 0; i < position; i++) {
-			await boot[step.id].action();
+	function onCheckbox(
+		event: Event & { currentTarget: EventTarget & HTMLInputElement },
+		position: number,
+	) {
+		const { checked } = event.currentTarget;
+		if (checked) {
+			for (let i = 0; i <= position; i++) {
+				const step = boot[i];
+				step.autorun = checked;
+			}
+		} else {
+			for (let i = position; i <= boot.length; i++) {
+				const step = boot[i];
+				step.autorun = checked;
+			}
+		}
+	}
+
+	async function runStep(position: number) {
+		for (let i = 0; i <= position; i++) {
+			const step = boot[i];
+			if (!step.status) {
+				step.status = '⏳';
+				try {
+					await boot[i].action();
+					step.status = '✅';
+				} catch {
+					step.status = '❌';
+				}
+			}
 		}
 	}
 </script>
 
 <Divider />
 
-<div><strong>Status:</strong> {status}</div>
 <div><strong>crossOriginIsolated:</strong> {isolated}</div>
 
 <Divider />
@@ -34,7 +75,7 @@
 	<br />
 	Use the checkbox next to each step to configure that step to run automatically on page reload.
 </div>
-<button on:click={onClear}>Clear Autoboot</button>
+<button onclick={onClear}>Clear Autoboot</button>
 
 <Divider />
 
@@ -49,8 +90,14 @@
 
 {#each Object.values(boot) as step, i}
 	<div>
-		{i + 1}. <input disabled={step.disabled} type="checkbox" checked={step.autorun} />
-		<button disabled={step.disabled} on:click={() => runStep(i, step)}>{step.name}</button>
+		{i + 1}.
+		<input
+			disabled={step.disabled}
+			type="checkbox"
+			checked={step.autorun}
+			oninput={(e) => onCheckbox(e, i)}
+		/>
+		<button disabled={step.disabled} onclick={() => runStep(i)}>{step.name}</button>
 		{step.status ? ` - ${step.status}` : ''}
 	</div>
 {/each}
