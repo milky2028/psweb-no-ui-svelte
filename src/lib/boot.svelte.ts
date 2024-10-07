@@ -1,4 +1,5 @@
 import { createWASMMemory } from './create-wasm-memory';
+import { loadScript } from './load-script';
 
 export const DEFAULT_AUTOBOOT_CONFIG = {
 	memory: false,
@@ -35,7 +36,9 @@ export const boot: BootStep[] = $state([
 		disabled: false,
 		status: '',
 		name: 'Load Emscripten JS Glue Code',
-		action: () => console.log('loading glue code'),
+		action: async () => {
+			await loadScript('/apollo_web.js');
+		},
 	},
 	{
 		id: 'wasm',
