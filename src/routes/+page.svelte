@@ -10,15 +10,6 @@
 	let isolated = $state('...');
 	const memory = $derived(getMemory());
 
-	$effect(() => {
-		const bootEntries: { [k: string]: number | boolean } = Object.fromEntries(
-			boot.map((step) => [step.id, step.autorun]),
-		);
-
-		bootEntries.memoryAmount = getMemory();
-		localStorage.setItem(AUTOBOOT_STORAGE_KEY, JSON.stringify(bootEntries));
-	});
-
 	onMount(() => {
 		isolated = `${crossOriginIsolated}`;
 
@@ -33,6 +24,15 @@
 				}
 			}
 		}
+	});
+
+	$effect(() => {
+		const bootEntries: { [k: string]: number | boolean } = Object.fromEntries(
+			boot.map((step) => [step.id, step.autorun]),
+		);
+
+		bootEntries.memoryAmount = memory;
+		localStorage.setItem(AUTOBOOT_STORAGE_KEY, JSON.stringify(bootEntries));
 	});
 
 	function onClear() {}
