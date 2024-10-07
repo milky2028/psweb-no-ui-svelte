@@ -69,7 +69,8 @@
 				try {
 					await boot[i].action();
 					step.status = '✅';
-				} catch {
+				} catch (e) {
+					console.error(e);
 					step.status = '❌';
 				}
 			}
