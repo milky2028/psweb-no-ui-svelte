@@ -1,5 +1,6 @@
 import { createWASMMemory } from './create-wasm-memory';
 import { loadScript } from './load-script';
+import { loadWASM } from './load-wasm';
 
 export const DEFAULT_AUTOBOOT_CONFIG = {
 	memory: false,
@@ -44,7 +45,7 @@ export const boot: BootStep[] = $state([
 		disabled: false,
 		status: '',
 		name: 'Load WASM',
-		action: () => console.log('loading wasm'),
+		action: loadWASM,
 	},
 	{
 		id: 'canvas',
