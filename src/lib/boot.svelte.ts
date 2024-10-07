@@ -36,9 +36,7 @@ export const boot: BootStep[] = $state([
 		disabled: false,
 		status: '',
 		name: 'Load Emscripten JS Glue Code',
-		action: async () => {
-			await loadScript('/apollo_web.js');
-		},
+		action: () => loadScript('/apollo_web.js'),
 	},
 	{
 		id: 'wasm',
