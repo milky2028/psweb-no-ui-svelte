@@ -45,5 +45,6 @@
 	<div>
 		{i + 1}. <input disabled={step.disabled} type="checkbox" checked={step.autorun} />
 		<button disabled={step.disabled}>{step.name}</button>
+		{step.status ? ` - ${step.status}` : ''}
 	</div>
 {/each}
