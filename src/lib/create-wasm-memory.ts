@@ -2,7 +2,11 @@ import { getMemory } from './memory.svelte';
 
 declare global {
 	interface Window {
-		Module: { wasmMemory: WebAssembly.Memory };
+		Module: {
+			wasmMemory: WebAssembly.Memory;
+			onRuntimeInitialized: VoidFunction;
+			create_opfs_backend: (cb: VoidFunction) => void;
+		};
 	}
 }
 
