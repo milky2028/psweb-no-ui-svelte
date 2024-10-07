@@ -4,7 +4,7 @@ const DEFAULT_AUTOBOOT_CONFIG = {
 	wasm: false,
 	canvas: false,
 	file: false,
-	brush: false
+	brush: false,
 };
 
 type StepName = keyof typeof DEFAULT_AUTOBOOT_CONFIG;
@@ -13,39 +13,47 @@ type BootStep = {
 	autorun: boolean;
 	disabled: boolean;
 	status: 'uninitialized' | 'running' | 'succeeded' | 'failed';
+	name: string;
+	// action: VoidFunction;
 };
 
 export const boot: Record<StepName, BootStep> = $state({
 	memory: {
 		autorun: false,
 		disabled: false,
-		status: 'uninitialized'
+		status: 'uninitialized',
+		name: 'Create WASM Memory',
 	},
 	glue: {
 		autorun: false,
 		disabled: false,
-		status: 'uninitialized'
+		status: 'uninitialized',
+		name: 'Load Emscripten JS Glue Code',
 	},
 	wasm: {
 		autorun: false,
 		disabled: false,
-		status: 'uninitialized'
+		status: 'uninitialized',
+		name: 'Load WASM',
 	},
 	canvas: {
 		autorun: false,
 		disabled: false,
-		status: 'uninitialized'
+		status: 'uninitialized',
+		name: 'Create Canvas and Attach Renderer',
 	},
 	file: {
 		autorun: false,
-		disabled: false,
-		status: 'uninitialized'
+		disabled: true,
+		status: 'uninitialized',
+		name: 'Import File and Open',
 	},
 	brush: {
 		autorun: false,
-		disabled: false,
-		status: 'uninitialized'
-	}
+		disabled: true,
+		status: 'uninitialized',
+		name: 'Draw Brushstroke',
+	},
 });
 
 const autobootStorageKey = 'autoboot';
