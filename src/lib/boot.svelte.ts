@@ -7,8 +7,10 @@ export const DEFAULT_AUTOBOOT_CONFIG = {
 	brush: false,
 };
 
+type StepIds = keyof typeof DEFAULT_AUTOBOOT_CONFIG;
+
 export type BootStep = {
-	id: string;
+	id: StepIds;
 	autorun: boolean;
 	disabled: boolean;
 	status: '' | '⏳' | '✅' | '❌';

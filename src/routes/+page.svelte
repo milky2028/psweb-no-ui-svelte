@@ -2,28 +2,36 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import Divider from '$lib/Divider.svelte';
-	import { boot, DEFAULT_AUTOBOOT_CONFIG, setAutorun, type BootStep } from '$lib/boot.svelte';
+	import { boot, setAutorun } from '$lib/boot.svelte';
+	import { getMemory, setMemory } from '$lib/memory.svelte';
 
 	const AUTOBOOT_STORAGE_KEY = 'autoboot';
+
 	let isolated = $state('...');
-	let memory = $state(2);
+	const memory = $derived(getMemory());
 
 	$effect(() => {
-		const bootEntries = boot.map((step) => [step.id, step.autorun]);
-		localStorage.setItem(AUTOBOOT_STORAGE_KEY, JSON.stringify(Object.fromEntries(bootEntries)));
+		const bootEntries: { [k: string]: number | boolean } = Object.fromEntries(
+			boot.map((step) => [step.id, step.autorun]),
+		);
+
+		bootEntries.memoryAmount = getMemory();
+		localStorage.setItem(AUTOBOOT_STORAGE_KEY, JSON.stringify(bootEntries));
 	});
 
 	onMount(() => {
 		isolated = `${crossOriginIsolated}`;
 
-		const autobootStorageKey = 'autoboot';
-		const storedBootConfig = localStorage.getItem(autobootStorageKey);
-		const autobootConfig: typeof DEFAULT_AUTOBOOT_CONFIG = storedBootConfig
-			? JSON.parse(storedBootConfig)
-			: { ...DEFAULT_AUTOBOOT_CONFIG };
-
-		for (const [key, shouldAutorun] of Object.entries(autobootConfig)) {
-			setAutorun(key, shouldAutorun);
+		const storedBootConfig = localStorage.getItem(AUTOBOOT_STORAGE_KEY);
+		if (storedBootConfig) {
+			const config = JSON.parse(storedBootConfig);
+			for (const [key, value] of Object.entries(config)) {
+				if (key === 'memoryAmount' && typeof value === 'number') {
+					setMemory(value);
+				} else if (typeof value === 'boolean') {
+					setAutorun(key, value);
+				}
+			}
 		}
 	});
 
@@ -40,7 +48,7 @@
 				step.autorun = checked;
 			}
 		} else {
-			for (let i = position; i <= boot.length; i++) {
+			for (let i = position; i < boot.length; i++) {
 				const step = boot[i];
 				step.autorun = checked;
 			}
@@ -81,7 +89,15 @@
 
 <label>
 	<div>Initial WebAssembly Memory Allotment: {memory}GB</div>
-	<input style="width: 300px" type="range" min="1" max="3.75" step="0.25" bind:value={memory} />
+	<input
+		style="width: 300px"
+		type="range"
+		min={1}
+		max={3.75}
+		step={0.25}
+		value={memory}
+		oninput={(e) => setMemory(e.currentTarget.valueAsNumber)}
+	/>
 </label>
 
 <Divider />
