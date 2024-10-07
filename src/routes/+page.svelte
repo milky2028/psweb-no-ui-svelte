@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import Divider from '$lib/Divider.svelte';
+	import { boot } from '$lib/boot.svelte';
 
 	let status = 'uninitialized';
 	let isolated = '...';
@@ -39,3 +40,10 @@
 <Divider />
 
 <div>Boot Process</div>
+
+{#each Object.values(boot) as step, i}
+	<div>
+		{i + 1}. <input disabled={step.disabled} type="checkbox" checked={step.autorun} />
+		<button disabled={step.disabled}>{step.name}</button>
+	</div>
+{/each}

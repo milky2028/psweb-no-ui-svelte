@@ -56,12 +56,12 @@ export const boot: Record<StepName, BootStep> = $state({
 	},
 });
 
-const autobootStorageKey = 'autoboot';
-const storedBootConfig = localStorage.getItem(autobootStorageKey);
-const autobootConfig: typeof DEFAULT_AUTOBOOT_CONFIG = storedBootConfig
-	? JSON.parse(storedBootConfig)
-	: { ...DEFAULT_AUTOBOOT_CONFIG };
+// const autobootStorageKey = 'autoboot';
+// const storedBootConfig = localStorage.getItem(autobootStorageKey);
+// const autobootConfig: typeof DEFAULT_AUTOBOOT_CONFIG = storedBootConfig
+// 	? JSON.parse(storedBootConfig)
+// 	: { ...DEFAULT_AUTOBOOT_CONFIG };
 
-for (const [key, shouldAutorun] of Object.entries(autobootConfig)) {
-	boot[key as StepName].autorun = shouldAutorun;
-}
+// for (const [key, shouldAutorun] of Object.entries(autobootConfig)) {
+// 	boot[key as StepName].autorun = shouldAutorun;
+// }
