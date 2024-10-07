@@ -24,6 +24,9 @@
 				}
 			}
 		}
+
+		const index = boot.findLastIndex((step) => step.autorun);
+		runStep(index);
 	});
 
 	$effect(() => {
