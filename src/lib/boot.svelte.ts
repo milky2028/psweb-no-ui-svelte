@@ -14,7 +14,7 @@ type BootStep = {
 	disabled: boolean;
 	status: '' | '⏳' | '✅' | '❌';
 	name: string;
-	// action: VoidFunction;
+	action: () => void | Promise<void>;
 };
 
 export const boot: Record<StepName, BootStep> = $state({
@@ -23,36 +23,42 @@ export const boot: Record<StepName, BootStep> = $state({
 		disabled: false,
 		status: '',
 		name: 'Create WASM Memory',
+		action: () => {},
 	},
 	glue: {
 		autorun: false,
 		disabled: false,
 		status: '',
 		name: 'Load Emscripten JS Glue Code',
+		action: () => {},
 	},
 	wasm: {
 		autorun: false,
 		disabled: false,
 		status: '',
 		name: 'Load WASM',
+		action: () => {},
 	},
 	canvas: {
 		autorun: false,
 		disabled: false,
 		status: '',
 		name: 'Create Canvas and Attach Renderer',
+		action: () => {},
 	},
 	file: {
 		autorun: false,
 		disabled: true,
 		status: '',
 		name: 'Import File and Open',
+		action: () => {},
 	},
 	brush: {
 		autorun: false,
 		disabled: true,
 		status: '',
 		name: 'Draw Brushstroke',
+		action: () => {},
 	},
 });
 

@@ -13,6 +13,12 @@
 	});
 
 	function onClear() {}
+
+	async function runStep(position: number) {
+		for (let i = 0; i < position; i++) {
+			await Object.values(boot)[i].action();
+		}
+	}
 </script>
 
 <Divider />
@@ -44,7 +50,7 @@
 {#each Object.values(boot) as step, i}
 	<div>
 		{i + 1}. <input disabled={step.disabled} type="checkbox" checked={step.autorun} />
-		<button disabled={step.disabled}>{step.name}</button>
+		<button disabled={step.disabled} on:click={() => runStep(i)}>{step.name}</button>
 		{step.status ? ` - ${step.status}` : ''}
 	</div>
 {/each}
