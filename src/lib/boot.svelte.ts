@@ -1,3 +1,5 @@
+import { createWASMMemory } from './create-wasm-memory';
+
 export const DEFAULT_AUTOBOOT_CONFIG = {
 	memory: false,
 	glue: false,
@@ -25,7 +27,7 @@ export const boot: BootStep[] = $state([
 		disabled: false,
 		status: '',
 		name: 'Create WASM Memory',
-		action: () => console.log('creating wasm memory'),
+		action: createWASMMemory,
 	},
 	{
 		id: 'glue',

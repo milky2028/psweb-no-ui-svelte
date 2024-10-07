@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import Divider from '$lib/Divider.svelte';
-	import { boot, setAutorun } from '$lib/boot.svelte';
+	import { boot, DEFAULT_AUTOBOOT_CONFIG, setAutorun } from '$lib/boot.svelte';
 	import { getMemory, setMemory } from '$lib/memory.svelte';
 
 	const AUTOBOOT_STORAGE_KEY = 'autoboot';
@@ -35,7 +35,10 @@
 		localStorage.setItem(AUTOBOOT_STORAGE_KEY, JSON.stringify(bootEntries));
 	});
 
-	function onClear() {}
+	function onClear() {
+		localStorage.setItem(AUTOBOOT_STORAGE_KEY, JSON.stringify({ ...DEFAULT_AUTOBOOT_CONFIG }));
+		location.reload();
+	}
 
 	function onCheckbox(
 		event: Event & { currentTarget: EventTarget & HTMLInputElement },
