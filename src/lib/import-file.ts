@@ -13,15 +13,15 @@ export function importFile() {
 
 		input.addEventListener('change', (event) => {
 			const file = getFile(event);
-			console.log(event);
 
 			if (file) {
 				const worker = new Worker(new URL('./write-worker.ts', import.meta.url));
 				worker.postMessage({ file });
 
 				worker.addEventListener('message', () => {
-					resolve();
+					// window.app.tools().place_tool().place_new(`/persistent/${file.name}`);
 
+					resolve();
 					worker.terminate();
 					input.remove();
 				});

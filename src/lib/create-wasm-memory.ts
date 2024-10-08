@@ -12,10 +12,15 @@ type Doc = {
 };
 
 type App = {
+	tools: () => {
+		select: (toolId: number) => void;
+		place_tool: () => { place_new: (path: string) => void };
+	};
 	init: VoidFunction;
 	connect_exception_handler: (cb: VoidFunction) => void;
 	connect_notification_handler: (cb: VoidFunction) => void;
 	documents: () => {
+		unopened: (name: string) => Doc;
 		client_target: () => { value: () => Doc };
 	};
 };

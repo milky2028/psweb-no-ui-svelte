@@ -4,6 +4,7 @@ import { loadWASM } from './load-wasm';
 import apolloGlue from '$lib/apollo/apollo_web.js?url';
 import { createAndAttachCanvas } from './create-and-attach-canvas';
 import { importFile } from './import-file';
+import { drawBrushstroke } from './draw-brushstroke';
 
 export const DEFAULT_AUTOBOOT_CONFIG = {
 	memory: false,
@@ -72,7 +73,7 @@ export const boot: BootStep[] = $state([
 		disabled: true,
 		status: '',
 		name: 'Draw Brushstroke',
-		action: () => console.log('drawing brushstroke'),
+		action: drawBrushstroke,
 	},
 ]);
 
