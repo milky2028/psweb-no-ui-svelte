@@ -1,3 +1,5 @@
+import wasmUrl from '$lib/apollo/apollo_web.wasm?url';
+
 let wasmRequest: ReturnType<typeof fetch> | undefined = undefined;
 
 let doWasmLoad: VoidFunction | undefined = undefined;
@@ -26,6 +28,14 @@ export async function loadWASM() {
 	await wasmRequest;
 
 	return new Promise<void>((resolve) => {
+		window.Module.locateFile = (url: string) => {
+			if (url.includes('wasm')) {
+				return wasmUrl;
+			}
+
+			return url;
+		};
+
 		window.Module.onRuntimeInitialized = async () => {
 			await createOPFSBackendAsync();
 

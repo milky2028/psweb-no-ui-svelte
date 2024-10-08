@@ -22,6 +22,7 @@ declare global {
 	interface Window {
 		app: App;
 		Module: {
+			locateFile: (url: string) => string;
 			wasmMemory: WebAssembly.Memory;
 			onRuntimeInitialized: VoidFunction;
 			create_opfs_backend: (cb: VoidFunction) => void;
