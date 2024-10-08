@@ -1,5 +1,6 @@
 import { getMemory } from './memory.svelte';
-import wasmUrl from '$lib/apollo/apollo_web.wasm?url';
+import requiredDataURL from '$lib/apollo/apollo_web_required.data?url';
+import wasmURL from '$lib/apollo/apollo_web.wasm?url';
 
 type Doc = {
 	make_renderer: (
@@ -49,8 +50,12 @@ export function createWASMMemory() {
 	window.Module = window.Module || {};
 	window.Module.wasmMemory = memory;
 	window.Module.locateFile = (url: string) => {
-		if (url.includes('wasm')) {
-			return wasmUrl;
+		if (url.endsWith('.data')) {
+			return requiredDataURL;
+		}
+
+		if (url.includes('.wasm')) {
+			return wasmURL;
 		}
 
 		return url;
