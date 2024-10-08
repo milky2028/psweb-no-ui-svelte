@@ -3,6 +3,7 @@ import { loadScript } from './load-script';
 import { loadWASM } from './load-wasm';
 import apolloGlue from '$lib/apollo/apollo_web.js?url';
 import { createAndAttachCanvas } from './create-and-attach-canvas';
+import { importFile } from './import-file';
 
 export const DEFAULT_AUTOBOOT_CONFIG = {
 	memory: false,
@@ -63,7 +64,7 @@ export const boot: BootStep[] = $state([
 		disabled: true,
 		status: '',
 		name: 'Import File and Open',
-		action: () => console.log('importing file'),
+		action: importFile,
 	},
 	{
 		id: 'brush',
