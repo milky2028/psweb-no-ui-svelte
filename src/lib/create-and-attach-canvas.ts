@@ -55,6 +55,4 @@ export function createAndAttachCanvas() {
 		1,
 		0,
 	);
-
-	return doc;
 }

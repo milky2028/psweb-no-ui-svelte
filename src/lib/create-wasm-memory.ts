@@ -1,7 +1,12 @@
 import { getMemory } from './memory.svelte';
 
 type Doc = {
-	make_renderer: (arg1: number, callback: VoidFunction, arg2: number, arg3: number) => void;
+	make_renderer: (
+		viewId: number,
+		callback: VoidFunction,
+		colorProfile: number,
+		renderAreaMode: number,
+	) => void;
 };
 
 type App = {
