@@ -1,0 +1,8 @@
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+
+/_app/immutable/*
+  cache-control: public
+  cache-control: immutable
+  cache-control: max-age=31536000
