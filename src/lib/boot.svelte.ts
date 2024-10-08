@@ -2,6 +2,7 @@ import { createWASMMemory } from './create-wasm-memory';
 import { loadScript } from './load-script';
 import { loadWASM } from './load-wasm';
 import apolloGlue from '$lib/apollo/apollo_web.js?url';
+import { createAndAttachCanvas } from './create-and-attach-canvas';
 
 export const DEFAULT_AUTOBOOT_CONFIG = {
 	memory: false,
@@ -54,7 +55,7 @@ export const boot: BootStep[] = $state([
 		disabled: false,
 		status: '',
 		name: 'Create Canvas and Attach Renderer',
-		action: () => console.log('creating canvas'),
+		action: createAndAttachCanvas,
 	},
 	{
 		id: 'file',

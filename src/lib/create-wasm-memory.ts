@@ -1,11 +1,28 @@
 import { getMemory } from './memory.svelte';
 
+type Doc = {
+	make_renderer: (arg1: number, callback: VoidFunction, arg2: number, arg3: number) => void;
+};
+
+type App = {
+	init: VoidFunction;
+	connect_exception_handler: (cb: VoidFunction) => void;
+	connect_notification_handler: (cb: VoidFunction) => void;
+	documents: () => {
+		client_target: () => { value: () => Doc };
+	};
+};
+
 declare global {
 	interface Window {
+		app: App;
 		Module: {
 			wasmMemory: WebAssembly.Memory;
 			onRuntimeInitialized: VoidFunction;
 			create_opfs_backend: (cb: VoidFunction) => void;
+			Application: {
+				new (settings: unknown): App;
+			};
 		};
 	}
 }

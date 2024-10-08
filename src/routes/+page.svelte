@@ -124,3 +124,5 @@
 		{step.status ? ` - ${step.status}` : ''}
 	</div>
 {/each}
+
+<Divider />
