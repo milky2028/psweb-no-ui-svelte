@@ -99,7 +99,7 @@
 	<input
 		style="width: 300px"
 		type="range"
-		min={1}
+		min={0.25}
 		max={3.75}
 		step={0.25}
 		value={memory}
